@@ -11,13 +11,13 @@ class PokemonEntity(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE)
-    appeared_at = models.DateTimeField()
-    disappeared_at = models.DateTimeField()
-    level = models.IntegerField()
-    health = models.IntegerField()
-    strength = models.IntegerField()
-    defence = models.IntegerField()
-    stamina = models.IntegerField()
+    appeared_at = models.DateTimeField(null=True, blank=True)
+    disappeared_at = models.DateTimeField(null=True, blank=True)
+    level = models.IntegerField(default=1)
+    health = models.IntegerField(default=1)
+    strength = models.IntegerField(default=1)
+    defence = models.IntegerField(default=1)
+    stamina = models.IntegerField(default=1)
 
     def __str__(self) -> str:
-        return f'{self.pokemon_title} ({self.latitude}, {self.longitude})'
+        return f'{self.pokemon.title} ({self.latitude}, {self.longitude})'
