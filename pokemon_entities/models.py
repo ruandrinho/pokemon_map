@@ -1,3 +1,4 @@
+from tkinter import CASCADE
 from django.db import models
 
 class Pokemon(models.Model):
@@ -6,6 +7,7 @@ class Pokemon(models.Model):
     title_jp = models.CharField(max_length=200, blank=True)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='images', null=True)
+    evoluted_from = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='evoluted_to')
     
     def __str__(self) -> str:
         return self.title
