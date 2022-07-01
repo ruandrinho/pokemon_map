@@ -1,9 +1,8 @@
 import folium
 import json
 
-from django.http import HttpResponseNotFound, HttpRequest
+from django.http import HttpResponseNotFound
 from django.shortcuts import render
-from pokemon_entities.models import PokemonEntity
 
 
 MOSCOW_CENTER = [55.751244, 37.618423]
@@ -28,24 +27,24 @@ def add_pokemon(folium_map, lat, lon, image_url=DEFAULT_IMAGE_URL):
 
 
 def show_all_pokemons(request):
-    # with open('pokemon_entities/pokemons.json', encoding='utf-8') as database:
-    #     pokemons = json.load(database)['pokemons']
-    pokemons = PokemonEntity.objects.all()
+    with open('pokemon_entities/pokemons.json', encoding='utf-8') as database:
+        pokemons = json.load(database)['pokemons']
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
+    for pokemon in pokemons:
+        for pokemon_entity in pokemon['entities']:
+            add_pokemon(
+                folium_map, pokemon_entity['lat'],
+                pokemon_entity['lon'],
+                pokemon['img_url']
+            )
+
     pokemons_on_page = []
-    for pokemon_entity in pokemons:
-        # pokemon_image_url = pokemon_entity.pokemon.image.url
-        pokemon_image_url = request.build_absolute_uri(pokemon_entity.pokemon.image.url)
-        add_pokemon(
-            folium_map, pokemon_entity.latitude,
-            pokemon_entity.longitude,
-            pokemon_image_url
-        )
+    for pokemon in pokemons:
         pokemons_on_page.append({
-            'pokemon_id': pokemon_entity.id,
-            'img_url': pokemon_image_url,
-            'title_ru': pokemon_entity.pokemon.title,
+            'pokemon_id': pokemon['pokemon_id'],
+            'img_url': pokemon['img_url'],
+            'title_ru': pokemon['title_ru'],
         })
 
     return render(request, 'mainpage.html', context={
