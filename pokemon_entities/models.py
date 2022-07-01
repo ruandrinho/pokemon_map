@@ -2,27 +2,27 @@ from tkinter import CASCADE
 from django.db import models
 
 class Pokemon(models.Model):
-    title = models.CharField(max_length=200)
-    title_en = models.CharField(max_length=200, blank=True)
-    title_jp = models.CharField(max_length=200, blank=True)
-    description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='images', null=True)
-    evoluted_from = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='evoluted_to')
+    title = models.CharField(max_length=200, verbose_name='Название')
+    title_en = models.CharField(max_length=200, blank=True, verbose_name='Название по-английски')
+    title_jp = models.CharField(max_length=200, blank=True, verbose_name='Название по-японски')
+    description = models.TextField(blank=True, verbose_name='Описание')
+    image = models.ImageField(upload_to='images', null=True, verbose_name='Изображение')
+    evoluted_from = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='evoluted_to', verbose_name='Из кого эволюционировал')
     
     def __str__(self) -> str:
         return self.title
     
 class PokemonEntity(models.Model):
-    latitude = models.FloatField()
-    longitude = models.FloatField()
-    pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE, related_name='entities')
-    appeared_at = models.DateTimeField(null=True, blank=True)
-    disappeared_at = models.DateTimeField(null=True, blank=True)
-    level = models.IntegerField(default=1)
-    health = models.IntegerField(default=1)
-    strength = models.IntegerField(default=1)
-    defence = models.IntegerField(default=1)
-    stamina = models.IntegerField(default=1)
+    latitude = models.FloatField(verbose_name='Широта')
+    longitude = models.FloatField(verbose_name='Долгота')
+    pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE, related_name='entities', verbose_name='Вид покемона')
+    appeared_at = models.DateTimeField(null=True, blank=True, verbose_name='Когда появляется')
+    disappeared_at = models.DateTimeField(null=True, blank=True, verbose_name='Когда исчезает')
+    level = models.IntegerField(default=1, verbose_name='Уровень')
+    health = models.IntegerField(default=1, verbose_name='Здоровье')
+    strength = models.IntegerField(default=1, verbose_name='Атака')
+    defence = models.IntegerField(default=1, verbose_name='Защита')
+    stamina = models.IntegerField(default=1, verbose_name='Выносливость')
 
     def __str__(self) -> str:
         return f'{self.pokemon.title} ({self.latitude}, {self.longitude})'
