@@ -77,18 +77,18 @@ def show_pokemon(request, pokemon_id):
         'title_jp': pokemon.title_jp,
         'description': pokemon.description
     }
-    if pokemon.evoluted_from is not None:
+    if pokemon.evolved_from is not None:
         pokemon_data_for_page['previous_evolution'] = {
-            'pokemon_id': pokemon.evoluted_from.id,
-            'img_url': request.build_absolute_uri(pokemon.evoluted_from.image.url),
-            'title_ru': pokemon.evoluted_from.title
+            'pokemon_id': pokemon.evolved_from.id,
+            'img_url': request.build_absolute_uri(pokemon.evolved_from.image.url),
+            'title_ru': pokemon.evolved_from.title
         }
-    if pokemon.evoluted_to.count() > 0:
-        pokemon.evoluted_to_first = pokemon.evoluted_to.first()
+    if pokemon.evolved_to.count() > 0:
+        pokemon.evolved_to_first = pokemon.evolved_to.first()
         pokemon_data_for_page['next_evolution'] = {
-            'pokemon_id': pokemon.evoluted_to_first.id,
-            'img_url': request.build_absolute_uri(pokemon.evoluted_to_first.image.url),
-            'title_ru': pokemon.evoluted_to_first.title
+            'pokemon_id': pokemon.evolved_to_first.id,
+            'img_url': request.build_absolute_uri(pokemon.evolved_to_first.image.url),
+            'title_ru': pokemon.evolved_to_first.title
         }
     return render(request, 'pokemon.html', context={
         'map': folium_map._repr_html_(), 'pokemon': pokemon_data_for_page
