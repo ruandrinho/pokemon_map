@@ -77,7 +77,7 @@ def show_pokemon(request, pokemon_id):
         'title_jp': pokemon.title_jp,
         'description': pokemon.description
     }
-    if pokemon.evolved_from is not None:
+    if pokemon.evolved_from:
         pokemon_data_for_page['previous_evolution'] = {
             'pokemon_id': pokemon.evolved_from.id,
             'img_url': request.build_absolute_uri(pokemon.evolved_from.image.url),
